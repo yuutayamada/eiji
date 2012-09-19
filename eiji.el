@@ -70,12 +70,8 @@
                    (window-width)))
          (base     (current-buffer)))
     (setq eiji:search-word word)
-    (popwin:popup-buffer
-     (get-buffer-create "*EIJIRO*")
-     :noselect t :stick t :width width :position :right)
     (save-current-buffer
       (with-temp-buffer
-        (async-shell-command command "*EIJIRO*")))
-    (switch-to-buffer base)))
+        (async-shell-command command "*EIJIRO*")))))
 
 (provide 'eiji)
