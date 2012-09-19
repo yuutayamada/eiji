@@ -44,15 +44,27 @@
         (read-string "Search word: " eiji:search-word)
       (thing-at-point 'word))))
 
+(defun eiji:format (type word)
+  (let* ((file eiji:search-path))
+    (case type
+      (:normal
+       (concat "\\grep " "\"^■" word " \\+\\({.\\+\\)\\?:\"" " " file))
+      (:global
+       (concat "\\grep " "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\"" " " file)))))
+
 (defun eiji:search ()
   (interactive)
-  (let* ((word    (eiji:decide-source-word))
-         (file     eiji:search-path)
-         (single-word
-          (concat "\\grep " "\"^■" word " \\+\\({.\\+\\)\\?:\"" " " file))
-         (global
-          (concat "\\grep " "\"^■.\\+" word ".\\+:\"" " " file))
-         (command (if current-prefix-arg global single-word))
+  (let* ((word
+          (if (equal (eiji:decide-source-word) eiji:search-word)
+              (stem:stripping-inflection eiji:search-word)
+            (eiji:decide-source-word)))
+         (striped-word (stem:stripping-inflection eiji:search-word))
+         (command
+          (concat
+           (eiji:format :normal word)  " \|\| "
+           (eiji:format :normal striped-word) " \|\| "
+           (eiji:format :global word)  " \|\| "
+           (eiji:format :global striped-word)))
          (width  (if (one-window-p)
                      (/ (window-width) 2)
                    (window-width)))
