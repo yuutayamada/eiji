@@ -28,10 +28,8 @@
 ;; nkf -w8 ./EIJI-135.TXT ./utf8/EIJI-135.txt
 
 (eval-when-compile (require 'cl))
-;;(require 'logalimacs)
-(require 'popwin)
+(require 'logalimacs)
 (require 'thingatpt)
-
 
 (defvar eiji:search-path "")
 (defvar eiji:search-word "")
@@ -42,7 +40,7 @@
        (region-beginning) (region-end))
     (if current-prefix-arg
         (read-string "Search word: " eiji:search-word)
-      (thing-at-point 'word))))
+      (loga-singularize (loga-return-word-on-cursor)))))
 
 (defun eiji:format (type word)
   (let* ((file eiji:search-path))
