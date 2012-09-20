@@ -30,6 +30,7 @@
 (eval-when-compile (require 'cl))
 (require 'logalimacs)
 (require 'thingatpt)
+(require 'popwin)
 
 (defvar eiji:search-path "")
 (defvar eiji:search-word "")
@@ -50,7 +51,7 @@
       (:global
        (concat "\\grep " "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\"" " " file)))))
 
-(defun eiji:search ()
+(defun* eiji:search (&optional search-word &key popwin)
   (interactive)
   (let* ((word
           (if (equal (eiji:decide-source-word) eiji:search-word)
@@ -68,6 +69,10 @@
                    (window-width)))
          (base     (current-buffer)))
     (setq eiji:search-word word)
+    (if popwin
+        (popwin:popup-buffer
+         (get-buffer-create "*EIJIRO*")
+         :noselect t :stick t :height 10 :position :top))
     (save-current-buffer
       (with-temp-buffer
         (async-shell-command command "*EIJIRO*")))))
