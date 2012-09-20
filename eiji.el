@@ -19,9 +19,10 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; --EIJIRO Search--
-;; Requirement:
-;; converted EIJI-version-no.txt file of EIJIRO data
+;; ...WIP...
+
+;;; Requirement:
+;; converted EIJI-version-no.txt file of EIJIRO data to UTF-8
 ;; execute below command from shell
 ;; cd /path/to/EIJIRO/
 ;; mkdir -p ./utf8
