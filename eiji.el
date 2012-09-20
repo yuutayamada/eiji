@@ -44,20 +44,20 @@
       (loga-singularize (loga-return-word-on-cursor)))))
 
 (defun eiji:format (type word)
-  (let* ((file eiji:search-path))
-    (case type
-      (:normal
-       (concat "\\grep " "\"^■" word " \\+\\({.\\+\\)\\?:\"" " " file))
-      (:global
-       (concat "\\grep " "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\"" " " file)))))
+  (lexical-let*
+      ((file eiji:search-path)
+       (word-and-regexp
+        (case type
+          (:normal
+           (concat "\"^■" word " \\+\\({.\\+\\)\\?:\" "))
+          (:global
+           (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\" ")))))
+    (concat "\\grep " word-and-regexp file)))
 
 (defun* eiji:search (&optional search-word &key popwin)
   (interactive)
-  (let* ((word
-          (if (equal (eiji:decide-source-word) eiji:search-word)
-              (stem:stripping-inflection eiji:search-word)
-            (eiji:decide-source-word)))
-         (striped-word (stem:stripping-inflection eiji:search-word))
+  (lexical-let* ((word (or search-word (eiji:decide-source-word)))
+         (striped-word (stem:stripping-inflection word))
          (command
           (concat
            (eiji:format :normal word)  " \|\| "
