@@ -66,8 +66,7 @@
            (eiji:format :global striped-word)))
          (width  (if (one-window-p)
                      (/ (window-width) 2)
-                   (window-width)))
-         (base     (current-buffer)))
+                   (window-width))))
     (setq eiji:search-word word)
     (if popwin
         (popwin:popup-buffer
