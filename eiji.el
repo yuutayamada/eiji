@@ -62,7 +62,11 @@
            (concat "\"^■" word " \\+\\({.\\+\\)\\?:\" "))
           (:global
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\" ")))))
-    (concat "\\grep " word-and-regexp file)))
+    (if (string< "" file)
+        (concat "\\grep " word-and-regexp file)
+      (error (format "Dictionary file path notting for %s.
+set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
+                     (symbol-name dict))))))
 
 (defun eiji:concat-commands (word order)
   (lexical-let*
