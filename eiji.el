@@ -37,7 +37,6 @@
 (defvar eiji:search-path-reiji "")
 (defvar eiji:search-path-ryaku "")
 (defvar eiji:search-path-waei "")
-
 (defvar eiji:search-word "")
 
 (defun eiji:decide-source-word ()
@@ -71,9 +70,9 @@
        (format
         (lambda (dict)
           (concat
-           (eiji:format :normal word dict)  " \|\| "
+           (eiji:format :normal word         dict) " \|\| "
            (eiji:format :normal striped-word dict) " \|\| "
-           (eiji:format :global word dict)  " \|\| "
+           (eiji:format :global word         dict) " \|\| "
            (eiji:format :global striped-word dict)))))
     (mapconcat 'identity
                (loop for dict in order
