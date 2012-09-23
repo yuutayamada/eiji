@@ -65,9 +65,10 @@
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\" ")))))
     (concat "\\grep " word-and-regexp file)))
 
-(defun eiji:concat-commands (word striped-word order)
+(defun eiji:concat-commands (word order)
   (lexical-let*
-      ((format
+      ((striped-word (stem:stripping-inflection word))
+       (format
         (lambda (dict)
           (concat
            (eiji:format :normal word dict)  " \|\| "
@@ -82,10 +83,8 @@
 (defun* eiji:search (&optional search-word &key popwin)
   (interactive)
   (lexical-let* ((word (or search-word (eiji:decide-source-word)))
-                 (striped-word (stem:stripping-inflection word))
                  (command
-                  (eiji:concat-commands
-                   word striped-word '(:eiji :reiji :ryaku)))
+                  (eiji:concat-commands word '(:eiji :reiji :ryaku)))
                  (width  (if (one-window-p)
                              (/ (window-width) 2)
                            (window-width))))
