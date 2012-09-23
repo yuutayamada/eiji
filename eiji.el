@@ -33,7 +33,11 @@
 (require 'thingatpt)
 (require 'popwin)
 
-(defvar eiji:search-path "")
+(defvar eiji:search-path-eiji "")
+(defvar eiji:search-path-reiji "")
+(defvar eiji:search-path-ryaku "")
+(defvar eiji:search-path-waei "")
+
 (defvar eiji:search-word "")
 
 (defun eiji:decide-source-word ()
@@ -44,9 +48,15 @@
         (read-string "Search word: " eiji:search-word)
       (loga-singularize (loga-return-word-on-cursor)))))
 
-(defun eiji:format (type word)
+(defun eiji:format (type word &optional dict)
   (lexical-let*
-      ((file eiji:search-path)
+      ((file
+        (case dict
+          (:eiji  eiji:search-path-eiji)
+          (:reiji eiji:search-path-reiji)
+          (:ryaku eiji:search-path-ryaku)
+          (:waei  eiji:search-path-waei)
+          (t      eiji:search-path-eiji)))
        (word-and-regexp
         (case type
           (:normal
@@ -55,19 +65,30 @@
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\" ")))))
     (concat "\\grep " word-and-regexp file)))
 
+(defun eiji:concat-commands (word striped-word order)
+  (lexical-let*
+      ((format
+        (lambda (dict)
+          (concat
+           (eiji:format :normal word dict)  " \|\| "
+           (eiji:format :normal striped-word dict) " \|\| "
+           (eiji:format :global word dict)  " \|\| "
+           (eiji:format :global striped-word dict)))))
+    (mapconcat 'identity
+               (loop for dict in order
+                     collect (funcall format dict))
+               " \|\| ")))
+
 (defun* eiji:search (&optional search-word &key popwin)
   (interactive)
   (lexical-let* ((word (or search-word (eiji:decide-source-word)))
-         (striped-word (stem:stripping-inflection word))
-         (command
-          (concat
-           (eiji:format :normal word)  " \|\| "
-           (eiji:format :normal striped-word) " \|\| "
-           (eiji:format :global word)  " \|\| "
-           (eiji:format :global striped-word)))
-         (width  (if (one-window-p)
-                     (/ (window-width) 2)
-                   (window-width))))
+                 (striped-word (stem:stripping-inflection word))
+                 (command
+                  (eiji:concat-commands
+                   word striped-word '(:eiji :reiji :ryaku)))
+                 (width  (if (one-window-p)
+                             (/ (window-width) 2)
+                           (window-width))))
     (setq eiji:search-word word)
     (if popwin
         (popwin:popup-buffer
