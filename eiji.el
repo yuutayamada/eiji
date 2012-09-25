@@ -87,7 +87,7 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
   (interactive)
   (lexical-let* ((word (or search-word (eiji:decide-source-word)))
                  (command
-                  (eiji:concat-commands word '(:eiji :reiji :ryaku)))
+                  (eiji:concat-commands word '(:eiji :reiji :ryaku :waei)))
                  (width  (if (one-window-p)
                              (/ (window-width) 2)
                            (window-width))))
