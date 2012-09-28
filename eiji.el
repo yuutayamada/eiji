@@ -70,14 +70,14 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
 
 (defun eiji:concat-commands (word order)
   (lexical-let*
-      ((striped-word (stem:stripping-inflection word))
+      ((stem-word (stem:stripping-inflection word))
        (format
         (lambda (dict)
           (concat
-           (eiji:format :normal word         dict) " \|\| "
-           (eiji:format :normal striped-word dict) " \|\| "
-           (eiji:format :global word         dict) " \|\| "
-           (eiji:format :global striped-word dict)))))
+           (eiji:format :normal word      dict) " \|\| "
+           (eiji:format :normal stem-word dict) " \|\| "
+           (eiji:format :global word      dict) " \|\| "
+           (eiji:format :global stem-word dict)))))
     (mapconcat 'identity
                (loop for dict in order
                      collect (funcall format dict))
