@@ -59,9 +59,9 @@
        (word-and-regexp
         (case type
           (:normal
-           (concat "\"^■" word " \\+\\({.\\+\\)\\?:\" "))
+           (concat "\"^■" word " \\+\\({.\\+\\)\\?: \" "))
           (:global
-           (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?:\" ")))))
+           (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \" ")))))
     (if (string< "" file)
         (concat "\\grep " word-and-regexp file)
       (error (format "Dictionary file path notting for %s.
