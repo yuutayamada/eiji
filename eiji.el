@@ -86,13 +86,17 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
 (defun* eiji:search (&optional search-word &key popwin)
   (interactive)
   (lexical-let* ((word (or search-word (eiji:decide-source-word)))
+                 (dictionary
+                  (if (or (equal eiji:search-word word) current-prefix-arg)
+                      (eiji:query)
+                    '(:eiji :reiji :ryaku)))
                  (command
                   (if (loga-japanese-p word)
                       (eiji:concat-commands word '(:waei))
-                    (eiji:concat-commands word '(:eiji :reiji :ryaku))))
-                 (width  (if (one-window-p)
-                             (/ (window-width) 2)
-                           (window-width))))
+                    (eiji:concat-commands word dictionary)))
+                 (width (if (one-window-p)
+                            (/ (window-width) 2)
+                          (window-width))))
     (setq eiji:search-word word)
     (if popwin
         (popwin:popup-buffer
@@ -101,5 +105,14 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
     (save-current-buffer
       (with-temp-buffer
         (async-shell-command command "*EIJIRO*")))))
+
+(defun eiji:query ()
+  (lexical-let*
+      ((command-list `((?m . :eiji)
+                       (?e . :reiji)
+                       (?a . :ryaku)))
+       (event (read-event "M)eaning E)xample A)bbreviation"))
+       (dictionary (assoc-default event command-list)))
+    `(,dictionary)))
 
 (provide 'eiji)
