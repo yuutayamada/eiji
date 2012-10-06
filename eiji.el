@@ -110,11 +110,10 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
                       (/ (window-width) 2)
                     (window-width))))
     (setq eiji:search-word word)
-    (if (or popwin
-            (eiji:popwin-buffer-p))
-        (popwin:popup-buffer
-         (get-buffer-create "*EIJIRO*")
-         :noselect t :stick t :height 10 :position :top))
+    (when (or popwin (eiji:popwin-buffer-p))
+      (popwin:popup-buffer
+       (get-buffer-create "*EIJIRO*")
+       :noselect t :stick t :height 10 :position :top))
     (save-current-buffer
       (with-temp-buffer
         (async-shell-command command "*EIJIRO*")))))
