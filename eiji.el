@@ -87,7 +87,11 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
            collect (funcall format dict)))))
 
 (defun eiji:concat (list)
-  (mapconcat 'identity list " \|\| "))
+  (lexical-let ((squash (lambda (commands)
+                          (loop for command in commands
+                                unless (null command)
+                                collect command))))
+    (mapconcat 'identity (funcall squash list) " \|\| ")))
 
 (defun* eiji:search (&optional search-word &key popwin)
   (interactive)
