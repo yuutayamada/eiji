@@ -62,9 +62,9 @@
            (concat "\"^■"     word " \\+\\({.\\+\\)\\?: \" "))
           (:global
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \" ")))))
-      (error (format "Dictionary file path notting for %s.
     (if (string< "" file-name)
         (concat "\\grep " word-and-regexp file-name)
+      (error (format "Dictionary file path is noting for %s.
 set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
                      (symbol-name dict))))))
 
