@@ -89,7 +89,8 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
 
 (defun* eiji:search (&optional search-word &key popwin)
   (interactive)
-  (lexical-let* ((word (or search-word (eiji:decide-source-word)))
+  (lexical-let* ((word
+                  (or search-word (eiji:decide-source-word)))
                  (dictionary
                   (if (or (equal eiji:search-word word) current-prefix-arg)
                       (eiji:query)
@@ -98,9 +99,10 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
                   (if (loga-japanese-p word)
                       (eiji:concat-commands word '(:waei))
                     (eiji:concat-commands word dictionary)))
-                 (width (if (one-window-p)
-                            (/ (window-width) 2)
-                          (window-width))))
+                 (width
+                  (if (one-window-p)
+                      (/ (window-width) 2)
+                    (window-width))))
     (setq eiji:search-word word)
     (if (or popwin
             (eiji:popwin-buffer-p))
