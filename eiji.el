@@ -49,7 +49,7 @@
 
 (defun eiji:format (type word &optional dict)
   (lexical-let*
-      ((file
+      ((file-name
         (case dict
           (:eiji  eiji:search-path-eiji)
           (:reiji eiji:search-path-reiji)
@@ -62,9 +62,9 @@
            (concat "\"^■" word " \\+\\({.\\+\\)\\?: \" "))
           (:global
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \" ")))))
-    (if (string< "" file)
-        (concat "\\grep " word-and-regexp file)
       (error (format "Dictionary file path notting for %s.
+    (if (string< "" file-name)
+        (concat "\\grep " word-and-regexp file-name)
 set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
                      (symbol-name dict))))))
 
