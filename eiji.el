@@ -76,6 +76,8 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
         (lambda (dict)
           (eiji:concat
            (list
+            (when (eiji:capital-p word)
+              (eiji:format :single (downcase word) dict))
             (eiji:format :single word      dict)
             (eiji:format :single stem-word dict)
             (eiji:format :global word      dict)
@@ -126,5 +128,9 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
        (event (read-event "M)eaning E)xample A)bbreviation"))
        (dictionary (assoc-default event command-list)))
     `(,dictionary)))
+
+(defun eiji:capital-p (word)
+  (string-match "[A-Z]"
+                (char-to-string (aref word 0))))
 
 (provide 'eiji)
