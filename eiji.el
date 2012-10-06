@@ -58,8 +58,8 @@
           (t      eiji:search-path-eiji)))
        (word-and-regexp
         (case type
-           (concat "\"^■" word " \\+\\({.\\+\\)\\?: \" "))
           (:single
+           (concat "\"^■"     word " \\+\\({.\\+\\)\\?: \" "))
           (:global
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \" ")))))
       (error (format "Dictionary file path notting for %s.
