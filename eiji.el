@@ -58,8 +58,8 @@
           (t      eiji:search-path-eiji)))
        (word-and-regexp
         (case type
-          (:normal
            (concat "\"^■" word " \\+\\({.\\+\\)\\?: \" "))
+          (:single
           (:global
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \" ")))))
       (error (format "Dictionary file path notting for %s.
@@ -74,8 +74,8 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
        (format
         (lambda (dict)
           (concat
-           (eiji:format :normal word      dict) " \|\| "
-           (eiji:format :normal stem-word dict) " \|\| "
+           (eiji:format :single word      dict) " \|\| "
+           (eiji:format :single stem-word dict) " \|\| "
            (eiji:format :global word      dict) " \|\| "
            (eiji:format :global stem-word dict)))))
     (mapconcat 'identity
