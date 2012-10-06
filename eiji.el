@@ -73,15 +73,18 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
       ((stem-word (stem:stripping-inflection word))
        (format
         (lambda (dict)
-          (concat
-           (eiji:format :single word      dict) " \|\| "
-           (eiji:format :single stem-word dict) " \|\| "
-           (eiji:format :global word      dict) " \|\| "
-           (eiji:format :global stem-word dict)))))
-    (mapconcat 'identity
-               (loop for dict in order
-                     collect (funcall format dict))
-               " \|\| ")))
+          (eiji:concat
+           (list
+            (eiji:format :single word      dict)
+            (eiji:format :single stem-word dict)
+            (eiji:format :global word      dict)
+            (eiji:format :global stem-word dict))))))
+    (eiji:concat
+     (loop for dict in order
+           collect (funcall format dict)))))
+
+(defun eiji:concat (list)
+  (mapconcat 'identity list " \|\| "))
 
 (defun* eiji:search (&optional search-word &key popwin)
   (interactive)
