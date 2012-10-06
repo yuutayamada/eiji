@@ -38,6 +38,7 @@
 (defvar eiji:search-path-ryaku "")
 (defvar eiji:search-path-waei "")
 (defvar eiji:search-word "")
+(defvar eiji:popwin-buffer-list '())
 
 (defun eiji:decide-source-word ()
   (if mark-active
@@ -101,13 +102,19 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
                             (/ (window-width) 2)
                           (window-width))))
     (setq eiji:search-word word)
-    (if popwin
+    (if (or popwin
+            (eiji:popwin-buffer-p))
         (popwin:popup-buffer
          (get-buffer-create "*EIJIRO*")
          :noselect t :stick t :height 10 :position :top))
     (save-current-buffer
       (with-temp-buffer
         (async-shell-command command "*EIJIRO*")))))
+
+(defun eiji:popwin-buffer-p ()
+  (loop for buffer in eiji:popwin-buffer-list
+        if (equal buffer (buffer-name))
+        do (return t)))
 
 (defun eiji:query ()
   (lexical-let*
