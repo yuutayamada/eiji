@@ -61,6 +61,8 @@
         (case type
           (:single
            (concat "\"^■"     word " \\+\\({.\\+\\)\\?: \" "))
+          (:waei
+           (concat "\"^■"     word ".\\+\\({.\\+\\)\\?: \" "))
           (:global
            (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \" ")))))
     (if (string< "" file-name)
@@ -75,13 +77,17 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
        (format
         (lambda (dict)
           (eiji:concat
-           (list
-            (when (eiji:capital-p word)
-              (eiji:format :single (downcase word) dict))
-            (eiji:format :single word      dict)
-            (eiji:format :single stem-word dict)
-            (eiji:format :global word      dict)
-            (eiji:format :global stem-word dict))))))
+           (if (equal :waei dict)
+               ;; Ja -> En
+               (list (eiji:format :waei word dict))
+             ;; En -> Ja
+             (list
+              (eiji:format :single word      dict)
+              (when (eiji:capital-p word)
+                (eiji:format :single (downcase word) dict))
+              (eiji:format :single stem-word dict)
+              (eiji:format :global word      dict)
+              (eiji:format :global stem-word dict)))))))
     (eiji:concat
      (loop for dict in order
            collect (funcall format dict)))))
