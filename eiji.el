@@ -120,7 +120,7 @@ set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
 
 (defun eiji:popwin-buffer-p ()
   (loop for buffer in eiji:popwin-buffer-list
-        if (equal buffer (buffer-name))
+        if (string-match buffer (buffer-name))
         do (return t)))
 
 (defun eiji:query ()
