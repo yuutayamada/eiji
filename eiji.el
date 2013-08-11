@@ -60,13 +60,13 @@
        (word-and-regexp
         (case type
           (:single
-           (concat "\"^■"     word " \\+\\({.\\+\\)\\?: \" "))
+           (concat "\"^■"     word " \\+\\({.\\+\\)\\?: \""))
           (:waei
-           (concat "\"^■"     word ".\\+\\({.\\+\\)\\?: \" "))
+           (concat "\"^■"     word ".\\+\\({.\\+\\)\\?: \""))
           (:global
-           (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \" ")))))
+           (concat "\"^■.\\+" word ".\\+ \\+\\({.\\+\\)\\?: \"")))))
     (if (string< "" file-name)
-        (concat "\\grep " word-and-regexp file-name)
+        (concat "\\grep " word-and-regexp " " file-name)
       (error (format "Dictionary file path is noting for %s.
 set file path to eiji:search-path-eiji, reiji, ryaku, and waei."
                      (symbol-name dict))))))
